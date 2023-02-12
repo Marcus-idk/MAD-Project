@@ -1,24 +1,58 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/top_bar.dart';
-import 'customWidgets/bottom_navbar.dart';
-import 'customWidgets/food_display.dart';
-import 'customWidgets/normal_button.dart';
+import 'package:project/rating_food.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuIndividualScreen extends StatefulWidget {
-  const MenuIndividualScreen({Key key}) : super(key: key);
+  final int data;
+
+  const MenuIndividualScreen({Key key, @required this.data}) : super(key: key);
 
   @override
   _MenuIndividualScreenState createState() => _MenuIndividualScreenState();
 }
 
 class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
+  String pic = '';
+  String name = '';
+  String price = '';
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    String ls = await getData(widget.data);
+    setState(() {
+      pic = getPic(ls);
+      name = getName(ls);
+      price = getPrice(ls);
+    });
+  }
+
+  Future<String> getData(int i) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<dynamic> list = json.decode(prefs.getString("listOfFoods"));
+    return list[i];
+  }
+
+  String getPic(String ls) {
+    return ls.split("/")[0];
+  }
+
+  String getName(String ls) {
+    return ls.split("/")[1];
+  }
+
+  String getPrice(String ls) {
+    return ls.split("/")[2];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Menu'),
-      ),
-      bottomNavigationBar: BottomNavbar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -27,14 +61,14 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Image.asset('images/salmon.jpg'),
+                  Image.asset('images/' + pic),
                   Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Salmon Dish',
+                          name,
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
@@ -46,7 +80,7 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
                               backgroundColor: Colors.white,
                               onPressed: () {},
                               child: Text(
-                                '1',
+                                price,
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 18),
                               ),
@@ -82,6 +116,44 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.purple, width: 0),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple.withOpacity(0.7),
+                            spreadRadius: 5,
+                            blurRadius: 1,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.all(16.0),
+                          textStyle: const TextStyle(fontSize: 25),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RatingScreen(
+                                data: widget.data,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text('Rate the food!',
+                            style: TextStyle(color: Colors.black)),
+                      ),
                     ),
                   ),
                   Padding(

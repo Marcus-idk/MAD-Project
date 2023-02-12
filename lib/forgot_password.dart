@@ -14,9 +14,6 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -58,9 +55,8 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: NormalButton(
-                      () => Navigator.of(context).pushReplacementNamed('/'),
-                      30),
+                  child:
+                      NormalButton(() => Navigator.pushNamed(context, '/'), 30),
                 ),
               ],
             ),

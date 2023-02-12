@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/customWidgets/bottom_navbar.dart';
+import 'package:project/menu_individual.dart';
 
 import 'normal_button.dart';
 
@@ -7,7 +7,9 @@ class SmallerFoodDisplay extends StatelessWidget {
   final String img;
   final String price;
   final String name;
-  const SmallerFoodDisplay(this.img, this.price, this.name, {Key key})
+  final int index;
+  const SmallerFoodDisplay(this.img, this.price, this.name, this.index,
+      {Key key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class SmallerFoodDisplay extends StatelessWidget {
                           height: 50,
                           child: FittedBox(
                             child: FloatingActionButton(
+                              heroTag: null,
                               backgroundColor: Colors.white,
                               onPressed: () {},
                               child: Text(
@@ -82,8 +85,16 @@ class SmallerFoodDisplay extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: NormalButton(
-                      () => Navigator.of(context).pushReplacementNamed('/'),
-                      20),
+                      () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MenuIndividualScreen(data: index),
+                              ),
+                            ),
+                          },
+                      30),
                 ),
               ],
             ),

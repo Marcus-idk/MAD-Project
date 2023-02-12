@@ -1,18 +1,70 @@
-import 'package:flutter/material.dart';
-import 'package:project/customWidgets/bottom_navbar.dart';
-import 'package:project/customWidgets/top_bar.dart';
+import 'dart:convert';
 
-import 'customWidgets/normal_button.dart';
+import 'package:flutter/material.dart';
+import 'package:project/customWidgets/top_bar.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RatingScreen extends StatefulWidget {
-  const RatingScreen({Key key}) : super(key: key);
+  final int data;
+
+  const RatingScreen({Key key, @required this.data}) : super(key: key);
 
   @override
   _RatingScreenState createState() => _RatingScreenState();
 }
 
 class _RatingScreenState extends State<RatingScreen> {
-  double _value = 0;
+  double _value = 1;
+  TextEditingController bodyController = new TextEditingController();
+  Future<void> submitForm() async {
+    final Email send_email = Email(
+      body: bodyController.text + " from: marcusgohkz@gmail.com",
+      subject: "Feedback",
+      recipients: ['marcusgohkz@gmail.com'],
+      cc: [],
+      bcc: [],
+      attachmentPaths: [],
+      isHTML: false,
+    );
+    await FlutterEmailSender.send(send_email);
+  }
+
+  String pic = '';
+  String name = '';
+  String price = '';
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    String ls = await getData(widget.data);
+    setState(() {
+      pic = getPic(ls);
+      name = getName(ls);
+      price = getPrice(ls);
+    });
+  }
+
+  Future<String> getData(int i) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<dynamic> list = json.decode(prefs.getString("listOfFoods"));
+    return list[i];
+  }
+
+  String getPic(String ls) {
+    return ls.split("/")[0];
+  }
+
+  String getName(String ls) {
+    return ls.split("/")[1];
+  }
+
+  String getPrice(String ls) {
+    return ls.split("/")[2];
+  }
+
   @override
   Widget build(BuildContext context) {
     showRating() {
@@ -35,11 +87,6 @@ class _RatingScreenState extends State<RatingScreen> {
     }
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      bottomNavigationBar: BottomNavbar(),
-      appBar: AppBar(
-        title: const Text('Rating'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,11 +96,11 @@ class _RatingScreenState extends State<RatingScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Image.asset('images/salmon.jpg'),
+                  Image.asset('images/' + pic),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                     child: Text(
-                      'Rating of food',
+                      'Rating of ' + name,
                       style: TextStyle(fontSize: 25),
                     ),
                   ),
@@ -84,6 +131,7 @@ class _RatingScreenState extends State<RatingScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
+                      controller: bodyController,
                       minLines: 2,
                       maxLines: 5,
                       decoration: InputDecoration(
@@ -119,7 +167,9 @@ class _RatingScreenState extends State<RatingScreen> {
                           padding: const EdgeInsets.all(16.0),
                           textStyle: const TextStyle(fontSize: 15),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          submitForm();
+                        },
                         child: const Text('Submit Rating',
                             style: TextStyle(color: Colors.black)),
                       ),

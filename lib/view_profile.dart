@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project/customWidgets/bottom_navbar.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:project/customWidgets/top_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewProfileScreen extends StatefulWidget {
   const ViewProfileScreen({Key key}) : super(key: key);
@@ -10,163 +11,190 @@ class ViewProfileScreen extends StatefulWidget {
 }
 
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
+  String name = '';
+  String email = '';
+  String number = '';
+  void initState() {
+    super.initState();
+    helper();
+  }
+
+  Future<void> helper() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name');
+      email = prefs.getString('email');
+      number = prefs.getString('number');
+    });
+  }
+
+  Widget displayName(String s) {
+    List<String> splitBySpace = s.split(" ");
+    List<TextSpan> listOfWidgets = new List<TextSpan>();
+    for (int i = 0; i < splitBySpace.length; i++) {
+      if (i == 0) {
+        listOfWidgets.add(TextSpan(
+          text: splitBySpace[i] + "\n",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ));
+      } else {
+        listOfWidgets.add(TextSpan(
+          text: splitBySpace[i] + "\n",
+        ));
+      }
+    }
+    return Container(
+      width: 120,
+      child: RichText(
+        softWrap: true,
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 20.0,
+            color: Colors.black,
+          ),
+          children: listOfWidgets,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('View Profile'),
-      ),
-      bottomNavigationBar: BottomNavbar(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          TopBar('View Profile'),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(100, 10, 70, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(50, 10, 20, 20),
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xFFA500).withOpacity(0.3),
-                                ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        TopBar('View Profile'),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(100, 10, 70, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(50, 10, 20, 20),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFA500).withOpacity(0.3),
                               ),
                             ),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'John\n',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: 'Anthony',
-                                  ),
-                                ],
+                          ),
+                          displayName(name),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(width: 1, color: Colors.purple),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                          child: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
                               ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Joined\n',
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                TextSpan(
+                                  text: '2 ',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: 'mon ago',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 70,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFFA500).withOpacity(0.15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              email,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Email',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(width: 1, color: Colors.purple),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              number,
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                            child: RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Joined\n',
-                                    style: const TextStyle(color: Colors.grey),
-                                  ),
-                                  TextSpan(
-                                    text: '2 ',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: 'mon ago',
-                                  ),
-                                ],
-                              ),
+                            Text(
+                              'Phone',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
                             ),
-                          ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              '0',
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Orders',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    height: 70,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFA500).withOpacity(0.15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text(
-                                'John@gmail.com',
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                'Email',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text(
-                                '9283 2199',
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                'Phone',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text(
-                                '92',
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                'Orders',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                    child: Container(
-                      width: 220,
-                      height: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child: Container(
+                    width: 220,
+                    height: 150,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/editProfile'),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               CircleAvatar(
@@ -187,7 +215,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                               ),
                             ],
                           ),
-                          Row(
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/orderHistory'),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               CircleAvatar(
@@ -209,16 +241,16 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

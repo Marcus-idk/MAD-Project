@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/top_bar.dart';
-import 'customWidgets/normal_button.dart';
-import 'customWidgets/bottom_navbar.dart';
 import 'customWidgets/order_history_food.dart';
 
-class OrderHistorySreen extends StatefulWidget {
-  const OrderHistorySreen({Key key}) : super(key: key);
+class OrderHistoryScreen extends StatefulWidget {
+  const OrderHistoryScreen({Key key}) : super(key: key);
 
   @override
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistorySreen> {
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavbar(),
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: const Text('Order History'),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

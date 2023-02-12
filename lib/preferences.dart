@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/multi_select.dart';
-import 'package:project/customWidgets/smaller_food_display.dart';
 import 'package:project/customWidgets/top_bar.dart';
-import 'customWidgets/bottom_navbar.dart';
-import 'customWidgets/food_display.dart';
-import 'customWidgets/normal_button.dart';
 
 class PreferencesScreen extends StatefulWidget {
   const PreferencesScreen({Key key}) : super(key: key);
@@ -39,10 +35,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preferences'),
-      ),
-      bottomNavigationBar: BottomNavbar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -125,7 +117,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                           padding: const EdgeInsets.all(16.0),
                           textStyle: const TextStyle(fontSize: 15),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Text('Confirm Preferences',
                             style: TextStyle(color: Colors.black)),
                       ),

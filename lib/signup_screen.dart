@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/top_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customWidgets/normal_button.dart';
 
@@ -11,13 +13,77 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final RegExp regExpForEmail = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  final RegExp regExpForPhone = RegExp(r"^\d{8}$");
+
+  String _name;
+  String _email;
+  String _password;
+  String _phoneNumber;
+
+  Future<void> setStringList() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<dynamic> list = json.decode(prefs.getString("listOfUsers"));
+    list.add(_name + "," + _email + "," + _password + "," + _phoneNumber);
+    prefs.setString("listOfUsers", json.encode(list));
+    print(prefs.getString('name'));
+    print(prefs.getString('email'));
+    print(prefs.getString('number'));
+    print(prefs.getString("listOfUsers"));
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  String validateName(String s) {
+    if (s.isEmpty) {
+      return 'Name is required';
+    }
+    return null;
+  }
+
+  String validateEmail(String s) {
+    if (s.isEmpty) {
+      return 'Email is required';
+    } else if (!(s.contains("@") && s.contains("."))) {
+      return 'Invalid Email!';
+    }
+    return null;
+  }
+
+  String validatePassword1(String s) {
+    if (s.isEmpty) {
+      return 'Password is required';
+    } else if (s.length < 8) {
+      return 'Password needs to be at least 8 characters';
+    }
+    return null;
+  }
+
+  String validatePassword2(String s) {
+    if (s.isEmpty) {
+      return 'Password Confirmation is required';
+    } else if (s.length < 8) {
+      return 'Password needs to be at least 8 characters';
+    }
+    return null;
+  }
+
+  String validatePhone(String s) {
+    RegExp regExp = RegExp(r'[A-Za-z]');
+    if (s.isEmpty) {
+      return 'Phone Number is required';
+    } else if (regExp.hasMatch(s)) {
+      return 'Phone number can only contain numbers!';
+    } else if (s.length < 8) {
+      return 'Invalid Phone number';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: const Text('Sign up'),
-      ),
+      resizeToAvoidBottomInset: true,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,85 +91,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
           TopBar('Sign Up'),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Name',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w300, color: Colors.blue),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(30, 15, 30, 0),
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _name = value;
+                          });
+                        },
+                        validator: validateName,
+                        decoration: InputDecoration(
+                          labelText: 'Name',
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orange),
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Your Email',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w300, color: Colors.blue),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _email = value;
+                          });
+                        },
+                        validator: validateEmail,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orange),
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w300, color: Colors.blue),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                      child: TextFormField(
+                        obscureText: true,
+                        onChanged: (value) {
+                          setState(() {
+                            _password = value;
+                          });
+                        },
+                        validator: validatePassword1,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orange),
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Confirm Password',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w300, color: Colors.blue),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _phoneNumber = value;
+                          });
+                        },
+                        validator: validatePhone,
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orange),
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -118,7 +168,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 NormalButton(
-                    () => Navigator.of(context).pushReplacementNamed('/'), 30),
+                    () async => {
+                          if (_formKey.currentState.validate())
+                            {
+                              await setStringList(),
+                              Navigator.of(context).pushReplacementNamed('/')
+                            },
+                        },
+                    30),
               ],
             ),
           ),

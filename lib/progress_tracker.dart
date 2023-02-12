@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/top_bar.dart';
-import 'customWidgets/normal_button.dart';
-import 'customWidgets/bottom_navbar.dart';
-import 'customWidgets/order_history_food.dart';
 
 class ProgressTrackerScreen extends StatefulWidget {
   const ProgressTrackerScreen({Key key}) : super(key: key);
@@ -14,118 +11,111 @@ class ProgressTrackerScreen extends StatefulWidget {
 class _ProgressTrackerScreenState extends State<ProgressTrackerScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavbar(),
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: const Text('Progress Tracker'),
-      ),
-      body: Column(
-        children: <Widget>[
-          TopBar('Progress Tracker'),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
-                child: Timeline(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Container(
-                        height: 100,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Order Placed',
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
+    return Column(
+      children: <Widget>[
+        TopBar('Progress Tracker'),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
+              child: Timeline(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                    child: Container(
+                      height: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Order Placed',
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Container(
-                        height: 100,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Preparing Food',
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                    child: Container(
+                      height: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Preparing Food',
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Container(
-                        height: 100,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Order being delivered',
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                    child: Container(
+                      height: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Order being delivered',
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                      child: Container(
-                        height: 100,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Order Picked Up',
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                    child: Container(
+                      height: 100,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Order Picked Up',
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  ],
-                  indicators: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.purple,
-                      radius: 30,
-                      child: Icon(
-                        Icons.online_prediction_sharp,
-                        size: 40,
-                      ),
+                  ),
+                ],
+                indicators: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: Colors.purple,
+                    radius: 30,
+                    child: Icon(
+                      Icons.online_prediction_sharp,
+                      size: 40,
                     ),
-                    CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      radius: 30,
-                      child: Icon(
-                        Icons.assignment_late_outlined,
-                        size: 40,
-                      ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.orange,
+                    radius: 30,
+                    child: Icon(
+                      Icons.assignment_late_outlined,
+                      size: 40,
                     ),
-                    CircleAvatar(
-                      backgroundColor: Colors.purple,
-                      radius: 30,
-                      child: Icon(
-                        Icons.delivery_dining,
-                        size: 40,
-                      ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.purple,
+                    radius: 30,
+                    child: Icon(
+                      Icons.delivery_dining,
+                      size: 40,
                     ),
-                    CircleAvatar(
-                      backgroundColor: Colors.purple,
-                      radius: 30,
-                      child: Icon(
-                        Icons.beenhere_outlined,
-                        size: 40,
-                      ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.purple,
+                    radius: 30,
+                    child: Icon(
+                      Icons.beenhere_outlined,
+                      size: 40,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
