@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project/contact_us.dart';
+import 'package:project/main.dart';
 import 'package:project/customWidgets/normal_button.dart';
 import 'customWidgets/top_bar.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -169,7 +171,11 @@ class _AboutUsState extends State<AboutUsScreen> {
                 ),
                 Text('Contact us!', style: TextStyle(fontSize: 30)),
                 NormalButton(
-                    () => Navigator.pushNamed(context, '/contactUs'), 30),
+                    () => Navigator.push(
+                          context,
+                          MyPageRouteBuilder(page: ContactUsScreen()),
+                        ),
+                    30),
               ],
             ),
           ),

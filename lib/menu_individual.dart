@@ -5,6 +5,8 @@ import 'package:project/customWidgets/top_bar.dart';
 import 'package:project/rating_food.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
+
 class MenuIndividualScreen extends StatefulWidget {
   final int data;
 
@@ -15,6 +17,7 @@ class MenuIndividualScreen extends StatefulWidget {
 }
 
 class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   String pic = '';
   String name = '';
   String price = '';
@@ -50,9 +53,24 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
     return ls.split("/")[2];
   }
 
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -112,7 +130,9 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
                               color: Colors.white,
                               size: 30,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showSnackBar("Added to favourites");
+                            },
                           ),
                         ),
                       ],
@@ -144,11 +164,8 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => RatingScreen(
-                                data: widget.data,
-                              ),
-                            ),
+                            MyPageRouteBuilder(
+                                page: RatingScreen(data: widget.data)),
                           );
                         },
                         child: const Text('Rate the food!',

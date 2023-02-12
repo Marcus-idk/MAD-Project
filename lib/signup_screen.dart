@@ -4,6 +4,8 @@ import 'package:project/customWidgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customWidgets/normal_button.dart';
+import 'login_screen.dart';
+import 'main.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key key}) : super(key: key);
@@ -16,6 +18,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final RegExp regExpForEmail = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final RegExp regExpForPhone = RegExp(r"^\d{8}$");
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
   String _name;
   String _email;
@@ -172,7 +190,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (_formKey.currentState.validate())
                             {
                               await setStringList(),
-                              Navigator.of(context).pushReplacementNamed('/')
+                              Navigator.push(
+                                context,
+                                MyPageRouteBuilder(page: LoginScreen()),
+                              ),
                             },
                         },
                     30),

@@ -176,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         if (_formKey.currentState.validate())
                           {
                             writeData(),
-                            Navigator.of(context).pushReplacementNamed('/'),
+                            Navigator.of(context).pushReplacementNamed('/home'),
                           }
                       },
                       child: Padding(

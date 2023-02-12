@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/main.dart';
 
 import '../menu_individual.dart';
 import 'normal_button.dart';
@@ -84,10 +85,8 @@ class FoodDisplay extends StatelessWidget {
                   child: NormalButton(
                       () => Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MenuIndividualScreen(data: index),
-                            ),
+                            MyPageRouteBuilder(
+                                page: MenuIndividualScreen(data: index)),
                           ),
                       30),
                 ),

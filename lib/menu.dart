@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/smaller_food_display.dart';
 import 'package:project/customWidgets/top_bar.dart';
+import 'package:project/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
 import 'models/Food.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -85,7 +87,10 @@ class _MenuScreenState extends State<MenuScreen> {
           padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/preferences');
+              Navigator.push(
+                context,
+                MyPageRouteBuilder(page: PreferencesScreen()),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(15.0),

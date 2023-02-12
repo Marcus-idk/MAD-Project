@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:project/customWidgets/top_bar.dart';
+import 'package:project/edit_profile.dart';
+import 'package:project/login_screen.dart';
+import 'package:project/order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'contact_us.dart';
+import 'main.dart';
 
 class ViewProfileScreen extends StatefulWidget {
   const ViewProfileScreen({Key key}) : super(key: key);
@@ -185,15 +191,17 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                   child: Container(
-                    width: 220,
-                    height: 150,
+                    width: 230,
+                    height: 230,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         GestureDetector(
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/editProfile'),
+                          onTap: () => Navigator.push(
+                            context,
+                            MyPageRouteBuilder(page: EditProfileScreen()),
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -217,8 +225,10 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/orderHistory'),
+                          onTap: () => Navigator.push(
+                            context,
+                            MyPageRouteBuilder(page: OrderHistoryScreen()),
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -236,6 +246,34 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                     const EdgeInsets.fromLTRB(40.0, 0, 0, 0),
                                 child: Text(
                                   'Order History',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MyPageRouteBuilder(page: LoginScreen()),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundColor: Colors.purple.withOpacity(0.3),
+                                radius: 35,
+                                child: Icon(
+                                  Icons.logout,
+                                  size: 45,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(40.0, 0, 0, 0),
+                                child: Text(
+                                  'Log out',
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ),

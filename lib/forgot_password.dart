@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'customWidgets/normal_button.dart';
 import 'customWidgets/top_bar.dart';
+import 'login_screen.dart';
+import 'package:project/main.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key key}) : super(key: key);
@@ -55,8 +57,12 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child:
-                      NormalButton(() => Navigator.pushNamed(context, '/'), 30),
+                  child: NormalButton(
+                      () => Navigator.push(
+                            context,
+                            MyPageRouteBuilder(page: LoginScreen()),
+                          ),
+                      30),
                 ),
               ],
             ),

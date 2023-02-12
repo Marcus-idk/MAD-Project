@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/menu_individual.dart';
 
+import '../main.dart';
 import 'normal_button.dart';
 
 class SmallerFoodDisplay extends StatelessWidget {
@@ -88,10 +89,8 @@ class SmallerFoodDisplay extends StatelessWidget {
                       () => {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MenuIndividualScreen(data: index),
-                              ),
+                              MyPageRouteBuilder(
+                                  page: MenuIndividualScreen(data: index)),
                             ),
                           },
                       30),

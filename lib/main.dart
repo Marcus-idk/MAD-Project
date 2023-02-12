@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:project/contact_us.dart';
 import 'package:project/edit_profile.dart';
 import 'package:project/home_screen.dart';
+import 'package:project/intro_page.dart';
 import 'package:project/login_screen.dart';
 import 'package:project/order_history.dart';
 import 'package:project/preferences.dart';
@@ -49,27 +49,80 @@ class _MyAppState extends State<MyApp> {
     await prefs.setString("listOfFoods", jsonEncode(listOfFoods));
   }
 
+  var map = {
+    '/': LoginScreen(),
+    '/signup': SignUpScreen(),
+    '/forgot': ForgotPasswordScreen(),
+    '/home': Starter(),
+    '/menuIndiv': MenuIndividualScreen(data: 0),
+    '/rating': RatingScreen(data: 0),
+    '/preferences': PreferencesScreen(),
+    '/editProfile': EditProfileScreen(),
+    '/orderHistory': OrderHistoryScreen(),
+    '/viewProfile': ViewProfileScreen(),
+    '/contactUs': ContactUsScreen(),
+  };
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Project',
-      initialRoute: '/',
       theme: ThemeData(
         fontFamily: 'Hind',
       ),
+      home: IntroPage(),
       routes: {
-        '/': (context) => LoginScreen(),
+        // '/': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/forgot': (context) => ForgotPasswordScreen(),
         '/home': (context) => Starter(),
         '/menuIndiv': (context) => MenuIndividualScreen(data: 0),
-        '/rating': (context) => RatingScreen(),
+        '/rating': (context) => RatingScreen(data: 0),
         '/preferences': (context) => PreferencesScreen(),
         '/editProfile': (context) => EditProfileScreen(),
         '/orderHistory': (context) => OrderHistoryScreen(),
         '/viewProfile': (context) => ViewProfileScreen(),
         '/contactUs': (context) => ContactUsScreen(),
       },
+      onGenerateRoute: (settings) {
+        return MyPageRouteBuilder(page: map[settings.name]);
+      },
     );
   }
+}
+
+class MyPageRouteBuilder extends PageRouteBuilder {
+  final Widget page;
+
+  MyPageRouteBuilder({this.page})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              ScaleTransition(
+            scale: Tween<double>(
+              begin: 0.0,
+              end: 1.0,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(
+                  0.0,
+                  1.0,
+                  curve: Curves.fastOutSlowIn,
+                ),
+              ),
+            ),
+            child: child,
+          ),
+        );
 }

@@ -1,7 +1,14 @@
 import 'dart:convert';
-
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:project/contact_us.dart';
+import 'package:project/forgot_password.dart';
+import 'package:project/home_screen.dart';
+import 'package:project/main.dart';
+import 'package:project/signup_screen.dart';
+import 'package:project/starter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'customWidgets/my_animated_button.dart';
 import 'customWidgets/normal_button.dart';
 import 'customWidgets/top_bar.dart';
 
@@ -114,7 +121,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 NormalButton(
                     () async => {
                           if (await checkIfUserExists())
-                            {Navigator.pushNamed(context, '/home')}
+                            {
+                              Navigator.pushReplacement(
+                                context,
+                                MyPageRouteBuilder(page: Starter()),
+                              ),
+                            }
                           else
                             setState(() {
                               errorMsg = "Invalid Log in";
@@ -129,18 +141,20 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                FlatButton(
-                  child: const Text('Sign Up'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                ),
-                FlatButton(
-                  child: const Text('Forgot Password?'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/forgot');
-                  },
-                ),
+                MyAnimatedButton(
+                    205,
+                    'Sign Up',
+                    () => Navigator.push(
+                          context,
+                          MyPageRouteBuilder(page: SignUpScreen()),
+                        )),
+                MyAnimatedButton(
+                    205,
+                    'Forgot Password?',
+                    () => Navigator.push(
+                          context,
+                          MyPageRouteBuilder(page: ForgotPasswordScreen()),
+                        )),
               ],
             ),
             decoration: BoxDecoration(
