@@ -118,7 +118,7 @@ class MyPageRouteBuilder extends PageRouteBuilder {
                 curve: Interval(
                   0.0,
                   1.0,
-                  curve: Curves.fastOutSlowIn,
+                  curve: Curves.linear,
                 ),
               ),
             ),

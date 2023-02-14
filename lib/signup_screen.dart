@@ -19,22 +19,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final RegExp regExpForPhone = RegExp(r"^\d{8}$");
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
-  void _showSnackBar(String text) {
-    final snackBar = SnackBar(
-        content: Text(
-          text,
-          textAlign: TextAlign.center,
-        ),
-        backgroundColor: Colors.purple,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        behavior: SnackBarBehavior.floating,
-        width: 250);
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
   String _name;
   String _email;
   String _password;
@@ -45,10 +29,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     List<dynamic> list = json.decode(prefs.getString("listOfUsers"));
     list.add(_name + "," + _email + "," + _password + "," + _phoneNumber);
     prefs.setString("listOfUsers", json.encode(list));
-    print(prefs.getString('name'));
-    print(prefs.getString('email'));
-    print(prefs.getString('number'));
-    print(prefs.getString("listOfUsers"));
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -97,9 +77,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       body: Column(
@@ -189,11 +186,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     () async => {
                           if (_formKey.currentState.validate())
                             {
+                              _showSnackBar("Successfully signed up!"),
                               await setStringList(),
-                              Navigator.push(
-                                context,
-                                MyPageRouteBuilder(page: LoginScreen()),
-                              ),
+                              Future.delayed(Duration(milliseconds: 800), () {
+                                Navigator.push(
+                                  context,
+                                  MyPageRouteBuilder(page: LoginScreen()),
+                                );
+                              }),
                             },
                         },
                     30),

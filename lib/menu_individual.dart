@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:project/customWidgets/top_bar.dart';
 import 'package:project/rating_food.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'main.dart';
 
 class MenuIndividualScreen extends StatefulWidget {
@@ -196,7 +194,9 @@ class _MenuIndividualScreenState extends State<MenuIndividualScreen> {
                           padding: const EdgeInsets.all(16.0),
                           textStyle: const TextStyle(fontSize: 25),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _showSnackBar("Order sent!");
+                        },
                         child: const Text('Order Now!',
                             style: TextStyle(color: Colors.black)),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/customWidgets/my_animated_button.dart';
 import 'package:project/menu_individual.dart';
 
 import '../main.dart';
@@ -37,8 +38,8 @@ class SmallerFoodDisplay extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Image(
-              width: 180,
-              height: 120,
+              width: 200,
+              height: 150,
               image: AssetImage("images/" + img),
               fit: BoxFit.cover,
             ),
@@ -83,17 +84,16 @@ class SmallerFoodDisplay extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: NormalButton(
-                      () => {
-                            Navigator.push(
-                              context,
-                              MyPageRouteBuilder(
-                                  page: MenuIndividualScreen(data: index)),
-                            ),
-                          },
-                      30),
+                MyAnimatedButton(
+                  190,
+                  "Explore >",
+                  () => {
+                    Navigator.push(
+                      context,
+                      MyPageRouteBuilder(
+                          page: MenuIndividualScreen(data: index)),
+                    ),
+                  },
                 ),
               ],
             ),

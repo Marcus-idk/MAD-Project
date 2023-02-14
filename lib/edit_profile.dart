@@ -55,9 +55,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       nameController.text = prefs.getString('name');
       emailController.text = prefs.getString('email');
       numberController.text = prefs.getString('number');
-      print(nameController.text);
-      print(emailController.text);
-      print(numberController.text);
     });
   }
 
@@ -86,9 +83,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     prefs.setString("listOfUsers", json.encode(list));
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -176,7 +190,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         if (_formKey.currentState.validate())
                           {
                             writeData(),
-                            Navigator.of(context).pushReplacementNamed('/home'),
+                            _showSnackBar("Successfully changed profile!"),
+                            Future.delayed(Duration(milliseconds: 800), () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/home');
+                            }),
                           }
                       },
                       child: Padding(

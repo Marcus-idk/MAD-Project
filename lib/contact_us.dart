@@ -36,9 +36,26 @@ class _ContactUsState extends State<ContactUsScreen> {
     return null;
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Column(
         children: <Widget>[
           TopBar('About Us'),
@@ -120,7 +137,11 @@ class _ContactUsState extends State<ContactUsScreen> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
-                              submitForm();
+                              _showSnackBar(
+                                  "Thank you for your feedback! Redirecting you to email...");
+                              Future.delayed(Duration(milliseconds: 800), () {
+                                submitForm();
+                              });
                             }
                           },
                           child: const Text('Submit feedback',
@@ -142,7 +163,11 @@ class _ContactUsState extends State<ContactUsScreen> {
                         child: IconButton(
                           icon: Icon(Icons.phone),
                           onPressed: () async {
-                            await launch(phoneNumber);
+                            _showSnackBar("Redirecting...");
+                            Future.delayed(Duration(milliseconds: 800),
+                                () async {
+                              await launch(phoneNumber);
+                            });
                           },
                         ),
                       ),

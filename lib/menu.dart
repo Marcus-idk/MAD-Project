@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:project/customWidgets/my_animated_button.dart';
 import 'package:project/customWidgets/smaller_food_display.dart';
 import 'package:project/customWidgets/top_bar.dart';
 import 'package:project/preferences.dart';
@@ -84,26 +85,18 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MyPageRouteBuilder(page: PreferencesScreen()),
-              );
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: MyAnimatedButton(
+            900,
+            "Preferences >",
+            () {
+              Future.delayed(Duration(milliseconds: 300), () {
+                Navigator.push(
+                  context,
+                  MyPageRouteBuilder(page: PreferencesScreen()),
+                );
+              });
             },
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                'Preferences >',
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              shape: StadiumBorder(),
-              primary: Colors.white,
-              side: BorderSide(width: 2, color: Colors.black),
-            ),
           ),
         ),
         Expanded(

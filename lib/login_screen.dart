@@ -40,9 +40,26 @@ class _LoginScreenState extends State<LoginScreen> {
     return false;
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -122,10 +139,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     () async => {
                           if (await checkIfUserExists())
                             {
-                              Navigator.pushReplacement(
-                                context,
-                                MyPageRouteBuilder(page: Starter()),
-                              ),
+                              _showSnackBar("Login Successful! Please wait.."),
+                              Future.delayed(Duration(milliseconds: 800), () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MyPageRouteBuilder(page: Starter()),
+                                );
+                              }),
                             }
                           else
                             setState(() {

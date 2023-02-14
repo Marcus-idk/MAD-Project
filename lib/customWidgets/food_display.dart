@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/customWidgets/my_animated_button.dart';
 import 'package:project/main.dart';
 
 import '../menu_individual.dart';
@@ -80,15 +81,13 @@ class FoodDisplay extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
-                  child: NormalButton(
-                      () => Navigator.push(
-                            context,
-                            MyPageRouteBuilder(
-                                page: MenuIndividualScreen(data: index)),
-                          ),
-                      30),
+                MyAnimatedButton(
+                  300,
+                  "Take a look >",
+                  () => Navigator.push(
+                    context,
+                    MyPageRouteBuilder(page: MenuIndividualScreen(data: index)),
+                  ),
                 ),
               ],
             ),

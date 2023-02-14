@@ -65,6 +65,22 @@ class _RatingScreenState extends State<RatingScreen> {
     return ls.split("/")[2];
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.purple,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        behavior: SnackBarBehavior.floating,
+        width: 250);
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     showRating() {
@@ -87,6 +103,7 @@ class _RatingScreenState extends State<RatingScreen> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -168,7 +185,11 @@ class _RatingScreenState extends State<RatingScreen> {
                           textStyle: const TextStyle(fontSize: 15),
                         ),
                         onPressed: () {
-                          submitForm();
+                          _showSnackBar(
+                              "Thanks for the feedback! Redirecting to email...");
+                          Future.delayed(Duration(milliseconds: 800), () {
+                            submitForm();
+                          });
                         },
                         child: const Text('Submit Rating',
                             style: TextStyle(color: Colors.black)),
